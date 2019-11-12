@@ -16,6 +16,7 @@ library(tidyverse)
 library(here)
 library(janitor)
 library(tidyr)
+library(ggridges)
 
 lobster_ab <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>% 
   clean_names()
@@ -31,6 +32,22 @@ annual_ab_site <- lobster_tidy %>%
 ```
 
 ```{r}
-ggplot()
+ggplot(annual_ab_site, aes(x = year, y = n)) +
+  geom_line(aes(color = site)) +
+  theme_minimal()
+```
+
+```{r}
+ggplot(annual_ab_site, aes(x = year, y = n)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~site) +
+  theme_minimal() 
+```
+
+
+
+```{r}
+ggplot(annual_ab_site, aes(x = year, y = n)) +
+  geom_line(aes(color = site))
 ```
 
