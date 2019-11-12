@@ -6,7 +6,31 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, include = FALSE)
 ```
 
-Testing testing! New stuff. 
+```{r}
+# read in lobster data
+
+library(tidyverse)
+library(here)
+library(janitor)
+library(tidyr)
+
+lobster_ab <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>% 
+  clean_names()
+
+lobster_tidy <- lobster_ab %>% 
+  uncount(count)
+```
+
+```{r}
+annual_ab_site <- lobster_tidy %>% 
+  group_by(year) %>% 
+  count(site)
+```
+
+```{r}
+ggplot()
+```
+
