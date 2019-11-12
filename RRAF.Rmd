@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, include = FALSE)
+knitr::opts_chunk$set(echo = TRUE, include = FALSE) ## edit this. Look at assignment 2
 ```
 
 ```{r}
@@ -24,6 +24,9 @@ lobster_ab <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>%
 lobster_tidy <- lobster_ab %>% 
   uncount(count)
 ```
+
+## Results A
+
 
 ```{r}
 annual_ab_site <- lobster_tidy %>% 
@@ -47,7 +50,32 @@ ggplot(annual_ab_site, aes(x = year, y = n)) +
 
 
 ```{r}
+
+cols <- c("IVEE" = "black", "NAPL" = "black", "AQUE" = "royalblue", "MOHK" = "royalblue", "CARP" = "royalblue")
+
 ggplot(annual_ab_site, aes(x = year, y = n)) +
-  geom_line(aes(color = site))
+  geom_line(aes(color = site), 
+            show.legend = FALSE) +
+  theme_minimal() +
+  scale_colour_manual(values = cols) +
+  geom_text(x = 2018,
+            y = 800,
+            label = "Isla Vista",
+            color = "black")
+  
+  
 ```
 
+## Results B
+
+
+```{r}
+lobster_size <- lobster_tidy %>% 
+  filter(year == c(2012, 2018))
+```
+
+```{r}
+ggplot(lobster_size, aes(x = site, y = size_mm, color = factor(year))) +
+  geom_violin(alpha = 0.5)
+
+```
