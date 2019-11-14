@@ -33,7 +33,10 @@ lobster_tidy <- lobster_ab %>%
 ```{r}
 annual_ab_site <- lobster_tidy %>% 
   group_by(year) %>% 
-  count(site) 
+  count(site)  %>% 
+  mutate(site_type = if_else(site %in% c("IVEE","NAPL"), "MPA", "Non-MPA"))
+         
+         
 ```
 
 ```{r}
@@ -53,22 +56,40 @@ ggplot(annual_ab_site, aes(x = year, y = n)) +
 
 ```{r}
 
-cols <- c("IVEE" = "darkblue", "NAPL" = "darkblue", "AQUE" = "cadetblue", "MOHK" = "cadetblue", "CARP" = "cadetblue")
+# cols <- c("IVEE" = "darkblue", "NAPL" = "darkblue", "AQUE" = "cadetblue", "MOHK" = "cadetblue", "CARP" = "cadetblue")
+# 
+# ggplot(annual_ab_site, aes(x = year, y = n)) +
+#   geom_line(aes(group = site,
+#                 color = site), 
+#             show.legend = FALSE,
+#             size = 0.75) +
+#   xlim(2012,2019) +
+#   geom_dl(aes(label=site,
+#               color = site),
+#           method = "last.points") +
+#   scale_colour_manual(values = cols) +
+#   ggtitle("LOBSTER COUNTS",
+#           subtitle = "2012 - 2018")+
+#   labs(x = "Year",
+#        y = "Lobster count") +
+#   theme_minimal()
+# 
+# 
+
 
 ggplot(annual_ab_site, aes(x = year, y = n)) +
   geom_line(aes(group = site,
-                color = site), 
-            show.legend = FALSE,
+                color = site_type), 
             size = 0.75) +
   xlim(2012,2019) +
   geom_dl(aes(label=site,
-              color = site),
+              color = site_type),
           method = "last.points") +
-  scale_colour_manual(values = cols) +
   ggtitle("LOBSTER COUNTS",
           subtitle = "2012 - 2018")+
   labs(x = "Year",
-       y = "Lobster count") +
+       y = "Lobster count",
+       color = "Site Type") +
   theme_minimal()
 
 
