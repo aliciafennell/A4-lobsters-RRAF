@@ -19,6 +19,7 @@ library(janitor)
 library(tidyr)
 library(ggridges)
 library(directlabels)
+library(RColorBrewer)
 
 ```
 
@@ -33,7 +34,11 @@ lobster_ab <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>%
   clean_names()
 
 lobster_tidy <- lobster_ab %>% 
-  uncount(count)
+  uncount(count) %>% 
+  mutate(site = replace(site, site == "CARP", "Carpinteria")) %>% 
+  mutate(site = replace(site, site == "AQUE", "Arroyo Quemado")) %>% 
+  mutate(site = replace(site, site == "MOHK", "Mohawk")) %>% 
+  mutate(site = replace(site, site == "NAPL", "Naples"))
 
 annual_ab_site <- lobster_tidy %>% 
   group_by(year) %>% 
@@ -73,9 +78,10 @@ ggplot(annual_ab_site, aes(x = year, y = n)) +
   geom_line(aes(group = site,
                 color = site_type), 
             size = 0.75) +
+  scale_color_manual(values = c("coral2", "deepskyblue3"))+
   theme_minimal()+
   theme(
-    legend.position = c(0.27, .88),
+    legend.position = c(0.25, .88),
     legend.justification = c("right", "top"),
     legend.box.just = "right",
     legend.margin = margin(6, 6, 6, 6),
@@ -95,12 +101,31 @@ ggplot(annual_ab_site, aes(x = year, y = n)) +
 
 
 ```{r}
+## Data frame for exploring lobster size dstirbution shifts in 2012 and 2018
+
 lobster_size <- lobster_tidy %>% 
   filter(year == c(2012, 2018))
+
 ```
 
 ```{r}
-ggplot(lobster_size, aes(x = site, y = size_mm, color = factor(year))) +
-  geom_violin(alpha = 0.5) 
+## Results B - Visualization of size distribution for lobsters obvserved at the 5 different sites in 2012 and 2018. Graph shows the community size distributions at each int eh 2 yers. 
+
+ggplot(lobster_size, aes(x = site, y = size_mm, fill = factor(year))) +
+  geom_violin(time = FALSE)+
+  scale_fill_brewer()+
+  labs(x = "Site",
+       y = "Size (mm)",
+       fill = "Year")+
+  ggtitle("CALIFORNIA SPINY LOBSTER DISTRIBUTION 2012 & 2018",
+          subtitle = "Santa Barbara Channel")+
+  theme_minimal()+
+  theme(legend.position = c(0.78, .88),
+        legend.justification = c("left", "top"),
+        legend.box.just = "right",
+        legend.margin = margin(6, 6, 6, 6),
+        legend.background = element_rect("white"))
+  
+
 
 ```
