@@ -6,8 +6,16 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, include = FALSE) ## edit this. Look at assignment 2
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE)
 ```
+
+# Introduction 
+
+# Data and Methods
+
+# Results
 
 ```{r}
 
@@ -24,6 +32,7 @@ library(RColorBrewer)
 ```
 
 ## Results A
+### Changes in annual lobster abundance by site 
 
 
 ```{r}
@@ -35,21 +44,26 @@ lobster_ab <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>%
 
 lobster_tidy <- lobster_ab %>% 
   uncount(count) %>% 
+  mutate(site = replace(site, site == "IVEE", "Isla Vista")) %>%
   mutate(site = replace(site, site == "CARP", "Carpinteria")) %>% 
   mutate(site = replace(site, site == "AQUE", "Arroyo Quemado")) %>% 
   mutate(site = replace(site, site == "MOHK", "Mohawk")) %>% 
-  mutate(site = replace(site, site == "NAPL", "Naples"))
+  mutate(site = replace(site, site == "NAPL", "Naples")) %>% 
+  mutate(site_type = if_else(site %in% c("Isla Vista","Naples"), "MPA", "Non-MPA"))
 
 annual_ab_site <- lobster_tidy %>% 
   group_by(year) %>% 
-  count(site)  %>% 
-  mutate(site_type = if_else(site %in% c("IVEE","NAPL"), "MPA", "Non-MPA")) %>% 
-  mutate(site = replace(site, site == "IVEE", "Isla Vista")) %>% 
-  mutate(site = replace(site, site == "CARP", "Carpinteria")) %>% 
-  mutate(site = replace(site, site == "AQUE", "Arroyo Quemado")) %>% 
-  mutate(site = replace(site, site == "MOHK", "Mohawk")) %>% 
-  mutate(site = replace(site, site == "NAPL", "Naples"))
-                                          
+  count(site) %>% 
+  mutate(site_type = if_else(site %in% c("Isla Vista","Naples"), "MPA", "Non-MPA"))
+
+lobster_summaries <- lobster_tidy %>% 
+  group_by(year, site_type) %>% 
+  filter(year == c(2012, 2018)) %>% 
+  summarize(mean_size = mean(size_mm), sd_size = sd(size_mm))
+  
+year_2012 <- lobster_tidy %>% 
+  filter(year == "2012")
+
          
 ```
 
@@ -98,6 +112,7 @@ ggplot(annual_ab_site, aes(x = year, y = n)) +
 ```
 
 ## Results B
+### Lobster size distribution shifts between 2012 and 2018
 
 
 ```{r}
@@ -129,3 +144,58 @@ ggplot(lobster_size, aes(x = site, y = size_mm, fill = factor(year))) +
 
 
 ```
+```{r}
+ggplot(lobster_size, aes(x = site, y = size_mm, fill = factor(year))) +
+  geom_jitter(aes(group = factor(year),
+                  color = factor(year)))
+```
+
+## Results C
+### Mean lobster sizes between site types (MPA and non-MPA) in 2012 and 2018
+
+
+```{r}
+## Starting t tests
+
+lobs_2012 <- lobster_summaries %>% 
+  filter(year == "2012")
+
+MPA_2012 <- lobster_tidy %>% 
+  filter(year == "2012") %>% 
+  filter(site_type == "MPA") %>% 
+  pull(size_mm)
+
+MPA_2012
+
+non_MPA_2012 <- lobster_tidy %>% 
+  filter(year == "2012") %>% 
+  filter(site_type == "Non-MPA") %>% 
+  pull(size_mm)
+
+size_2012_ttest <- t.test(MPA_2012, non_MPA_2012)
+
+size_2012_ttest
+
+test_meann <- lobster_tidy %>% 
+  filter(year == "2012") %>% 
+  filter(site_type == "Non-MPA") %>% 
+  summarise(mean_size = mean(size_mm))
+  
+MPA_test <- year_2012 %>% 
+  filter(site_type == "MPA") %>% 
+  pull(size_mm)
+
+
+non_MPA_test <- year_2012 %>% 
+  filter(site_type == "Non-MPA") %>% 
+  pull(size_mm)
+
+size_test <- t.test(MPA_test, non_MPA_test)
+
+size_test
+
+```
+
+# Summary 
+
+# References 
