@@ -10,7 +10,8 @@ knitr::opts_chunk$set(echo = TRUE, include = FALSE) ## edit this. Look at assign
 ```
 
 ```{r}
-# read in lobster data
+
+# Attach packages and read in lobster data
 
 library(tidyverse)
 library(here)
@@ -19,80 +20,75 @@ library(tidyr)
 library(ggridges)
 library(directlabels)
 
-lobster_ab <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>% 
-  clean_names()
-
-lobster_tidy <- lobster_ab %>% 
-  uncount(count)
-
 ```
 
 ## Results A
 
 
 ```{r}
+
+## Creating tidy data
+
+lobster_ab <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>% 
+  clean_names()
+
+lobster_tidy <- lobster_ab %>% 
+  uncount(count)
+
 annual_ab_site <- lobster_tidy %>% 
   group_by(year) %>% 
   count(site)  %>% 
-  mutate(site_type = if_else(site %in% c("IVEE","NAPL"), "MPA", "Non-MPA"))
+  mutate(site_type = if_else(site %in% c("IVEE","NAPL"), "MPA", "Non-MPA")) %>% 
+  mutate(site = replace(site, site == "IVEE", "Isla Vista")) %>% 
+  mutate(site = replace(site, site == "CARP", "Carpinteria")) %>% 
+  mutate(site = replace(site, site == "AQUE", "Arroyo Quemado")) %>% 
+  mutate(site = replace(site, site == "MOHK", "Mohawk")) %>% 
+  mutate(site = replace(site, site == "NAPL", "Naples"))
+                                          
          
-         
 ```
 
 ```{r}
-ggplot(annual_ab_site, aes(x = year, y = n)) +
-  geom_line(aes(color = site)) +
-  theme_minimal()
-```
 
-```{r}
-ggplot(annual_ab_site, aes(x = year, y = n)) +
-  geom_bar(stat = "identity") +
-  facet_wrap(~site) +
-  theme_minimal() 
-```
+## Exploratory graphs
 
 
-
-```{r}
-
-# cols <- c("IVEE" = "darkblue", "NAPL" = "darkblue", "AQUE" = "cadetblue", "MOHK" = "cadetblue", "CARP" = "cadetblue")
-# 
 # ggplot(annual_ab_site, aes(x = year, y = n)) +
-#   geom_line(aes(group = site,
-#                 color = site), 
-#             show.legend = FALSE,
-#             size = 0.75) +
-#   xlim(2012,2019) +
-#   geom_dl(aes(label=site,
-#               color = site),
-#           method = "last.points") +
-#   scale_colour_manual(values = cols) +
-#   ggtitle("LOBSTER COUNTS",
-#           subtitle = "2012 - 2018")+
-#   labs(x = "Year",
-#        y = "Lobster count") +
+#   geom_line(aes(color = site)) +
 #   theme_minimal()
 # 
-# 
+# ggplot(annual_ab_site, aes(x = year, y = n)) +
+#   geom_bar(stat = "identity") +
+#   facet_wrap(~site) +
+#   theme_minimal() 
 
+```
+
+
+```{r}
+
+## Results A - visualalization showing  changes in annual lobster abundace at the five sites over time, designating MPA versus non-MPA sites. 
 
 ggplot(annual_ab_site, aes(x = year, y = n)) +
   geom_line(aes(group = site,
                 color = site_type), 
             size = 0.75) +
-  xlim(2012,2019) +
+  theme_minimal()+
+  theme(
+    legend.position = c(0.27, .88),
+    legend.justification = c("right", "top"),
+    legend.box.just = "right",
+    legend.margin = margin(6, 6, 6, 6),
+    legend.background = element_rect("white"))+
+  xlim(2012,2019.5) +
   geom_dl(aes(label=site,
               color = site_type),
           method = "last.points") +
-  ggtitle("LOBSTER COUNTS",
-          subtitle = "2012 - 2018")+
+  ggtitle("CALIFORNIA SPINY LOBSTER ABUNDANCE",
+          subtitle = "Santa Barbara Channel (2012 - 2018)")+
   labs(x = "Year",
        y = "Lobster count",
-       color = "Site Type") +
-  theme_minimal()
-
-
+       color = "Site Type")
 ```
 
 ## Results B
@@ -105,6 +101,6 @@ lobster_size <- lobster_tidy %>%
 
 ```{r}
 ggplot(lobster_size, aes(x = site, y = size_mm, color = factor(year))) +
-  geom_violin(alpha = 0.5)
+  geom_violin(alpha = 0.5) 
 
 ```
