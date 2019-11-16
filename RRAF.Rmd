@@ -1,5 +1,5 @@
 ---
-title: "Impact of Marine Protected Area's on California Spiny Lobster distribution along the Santa Barbara coast"
+title: "Impact of Marine Protected Area's on California Spiny Lobster distribution along Santa Barbara coast"
 subtitle: "A report prepared for ESM 206"
 author: "Alicia Fennell and Rachel Rhodes"
 date: "11/12/2019"
@@ -14,13 +14,12 @@ knitr::opts_chunk$set(echo = FALSE,
 
 # Introduction 
 
-Starting in 2012, data has been collected on the abundance, size and location of the California spiny lobster (Panulirus interruptus) in an effort to understand the ecology of the coastal kelp forests along the Santa Barbara coast. California spiny lobsters are an important predator of sea urchins....
-
+Starting in 2012, data has been collected on the abundance, size and location of the California spiny lobster (Panulirus interruptus) in an effort to understand the ecology of the coastal kelp forests along the Santa Barbara coast. California spiny lobsters are an important predator species thatkeep kelp-eating species like sea urchin in check. 
 
 
 # Data and Methods
 
-Santa Barbara Coastal Long Term Ecological Research program at UC Santa Barbaraca collected data for the abundance, size, and location of California spiny lobster along the coast of the Santa Barbara channel from 2012-2018. Spiny lobster abundance and size data was collected during annual dives before the start of the fishing season in late summer at five sites.Divers recorded the number and size of spiny lobster at four 60 x 5 m (300 m2 total) transects at each site. Two of the sites, Naples and Isla Vista, are Marine Protected Areas that were established in January 2012. Mean lobster abundance for sites that are designated as Marine Protected areas and sites that are not protected were compared by two-sample t-tests....All analysis and figured were prepared using R software version 3.6.1. 
+Santa Barbara Coastal Long Term Ecological Research program at UC Santa Barbaraca collected data for the abundance, size, and location of California spiny lobster along the coast of the Santa Barbara channel from 2012-2018. Spiny lobster abundance and size data was collected during annual dives before the start of the fishing season in late summer at five sites.Divers recorded the number and size of spiny lobster at four 60 x 5 m (300 m2 total) transects at each site. Two of the sites, Naples and Isla Vista, are Marine Protected Areas that were established in January 2012. Mean lobster abundance forMarine Protected area site and non-protected sites were compared by two-sample t-tests....All analysis and figured were prepared using R software version 3.6.1. 
 
 
 ```{r}
@@ -135,7 +134,8 @@ ggplot(annual_ab_site, aes(x = year, y = n)) +
 ## Data frame for exploring lobster size distribution shifts in 2012 and 2018
 
 lobster_size <- lobster_tidy %>% 
-  filter(year == c(2012, 2018))
+  filter(year == c(2012, 2018)) %>% 
+  mutate(site = fct_relevel(site, c("Isla Vista", "Naples", "Arroyo Quemado", "Carpinteria", "Mohak")))
 
 
 ```
@@ -144,7 +144,8 @@ lobster_size <- lobster_tidy %>%
 ## Results B - Visualization of size distribution for lobsters obvserved at the 5 different sites in 2012 and 2018. Graph shows the community size distributions at each in the 2 years. 
 
 ggplot(lobster_size, aes(x = site, y = size_mm, fill = factor(year))) +
-  geom_violin(time = FALSE)+
+  geom_violin()+
+  stat_summary(fun.y = "mean", geom = "point", size = 3)+
   scale_fill_brewer()+
   labs(x = "Site",
        y = "Size (mm)",
@@ -157,7 +158,6 @@ ggplot(lobster_size, aes(x = site, y = size_mm, fill = factor(year))) +
         legend.box.just = "right",
         legend.margin = margin(6, 6, 6, 6),
         legend.background = element_rect("white"))
-  
 
 
 ```
@@ -165,10 +165,11 @@ ggplot(lobster_size, aes(x = site, y = size_mm, fill = factor(year))) +
 
 ## Jitterplot not really working- unable to separate the two years the way we want
 
-ggplot(lobster_size, aes(x = site, y = size_mm)) +
-  geom_jitter(aes(color = factor(year))) +
-  facet_grid(~year) +
+ggplot(lobster_size, aes(x = factor(year), y = size_mm)) +
+  geom_violin(aes(color = factor(year), alpha = 0.5))+
   scale_fill_brewer()+
+  geom_boxplot(width = 0.3)+
+  facet_grid(~site) +
   labs(x = "Site",
        y = "Size (mm)",
        fill = "Year")+
@@ -180,6 +181,8 @@ ggplot(lobster_size, aes(x = site, y = size_mm)) +
   #       legend.box.just = "right",
   #       legend.margin = margin(6, 6, 6, 6),
   #       legend.background = element_rect("white"))
+
+
 ```
 
 
