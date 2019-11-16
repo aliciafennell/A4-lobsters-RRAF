@@ -14,15 +14,14 @@ knitr::opts_chunk$set(echo = FALSE,
 
 # Introduction 
 
-Starting in 2012, the Santa Barbara Coastal Term Ecological Reserach site has collected data on the abundance, size and location of the California spiny lobster (Panulirus interruptus) in an effort to understadn the ecology of the coastal kelp forests along the Santa Barbara coast. California spiny lobsters are an important predator of sea urchins....
+Starting in 2012, data has been collected on the abundance, size and location of the California spiny lobster (Panulirus interruptus) in an effort to understand the ecology of the coastal kelp forests along the Santa Barbara coast. California spiny lobsters are an important predator of sea urchins....
 
 
 
 # Data and Methods
 
-Santa Barbara Coastal Long Term Ecological Research program at UC Santa Barbaraca collected data for the abundance, size, and location of California spiny lobster along the coast of the Santa Barbara channel from 2012-2018. Spiny lobster abundance and size data was collected during annual dives before the start of the fishing season in late summer at five sites. Divers recorded the number and size of spiny lobster at four 60 x 5 m (300 m2 total) transects at each site. 
+Santa Barbara Coastal Long Term Ecological Research program at UC Santa Barbaraca collected data for the abundance, size, and location of California spiny lobster along the coast of the Santa Barbara channel from 2012-2018. Spiny lobster abundance and size data was collected during annual dives before the start of the fishing season in late summer at five sites.Divers recorded the number and size of spiny lobster at four 60 x 5 m (300 m2 total) transects at each site. Two of the sites, Naples and Isla Vista, are Marine Protected Areas that were established in January 2012. Mean lobster abundance for sites that are designated as Marine Protected areas and sites that are not protected were compared by two-sample t-tests....All analysis and figured were prepared using R software version 3.6.1. 
 
-# Results
 
 ```{r}
 
@@ -37,9 +36,6 @@ library(directlabels)
 library(RColorBrewer)
 
 ```
-
-## Results A
-### Changes in annual lobster abundance by site 
 
 
 ```{r}
@@ -84,6 +80,7 @@ year_2018 <- lobster_tidy %>%
          
 ```
 
+
 ```{r}
 
 ## Exploratory graphs
@@ -98,6 +95,10 @@ year_2018 <- lobster_tidy %>%
 #   theme_minimal() 
 
 ```
+## Results
+
+#### 1. Effects of Marine Protected Area designation on spiny lobster abundance
+
 
 
 ```{r}
@@ -127,8 +128,8 @@ ggplot(annual_ab_site, aes(x = year, y = n)) +
        color = "Site Type")
 ```
 
-## Results B
-### Lobster size distribution shifts between 2012 and 2018
+
+#### 2. Lobster size distribution shifts between 2012 and 2018
 
 ```{r}
 ## Data frame for exploring lobster size distribution shifts in 2012 and 2018
@@ -173,19 +174,23 @@ ggplot(lobster_size, aes(x = site, y = size_mm)) +
        fill = "Year")+
   ggtitle("CALIFORNIA SPINY LOBSTER DISTRIBUTION 2012 & 2018",
           subtitle = "Santa Barbara Channel")+
-  theme_minimal()+
-  theme(legend.position = c(0.78, .88),
-        legend.justification = c("left", "top"),
-        legend.box.just = "right",
-        legend.margin = margin(6, 6, 6, 6),
-        legend.background = element_rect("white"))
+  theme_minimal()
+  # theme(legend.position = c(0.78, .88),
+  #       legend.justification = c("left", "top"),
+  #       legend.box.just = "right",
+  #       legend.margin = margin(6, 6, 6, 6),
+  #       legend.background = element_rect("white"))
 ```
 
-## Results C
-### Mean lobster sizes between site types (MPA and non-MPA) in 2012 and 2018
+
+#### 3. Mean lobster sizes between site types (MPA and non-MPA) in 2012 and 2018
 
 
-```{r}
+
+## Summary
+
+-----
+```{r,}
 ## Starting t tests
 
 MPA_2012 <- year_2012 %>% 
@@ -231,8 +236,8 @@ In comparing these two sample populations,...
 
 There is a .2% chance that we could have gotten sample means at least as different as ours if we sampled from populations with the same mean. Using a 95% confidence interval, we have sufficient evidence to reject the null hypothesis that the sample populations have the same mean. .....????
 
-# Summary 
 
-# References 
+
+## References 
 
 **Reed D. 2019.** *SBC LTER: Reef: Abundance, size and fishing effort for California Spiny Lobster (Panulirus interruptus), ongoing since 2012.* Environmental Data Initiative. https://doi.org/10.6073/pasta/a593a675d644fdefb736750b291579a0. Dataset accessed 11/15/2019.
