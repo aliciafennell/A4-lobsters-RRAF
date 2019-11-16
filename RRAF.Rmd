@@ -33,6 +33,8 @@ library(tidyr)
 library(ggridges)
 library(directlabels)
 library(RColorBrewer)
+library(effsize)
+library(kableExtra)
 
 ```
 
@@ -63,9 +65,9 @@ annual_ab_site <- lobster_tidy %>%
  ## maybe delete this? Possibly incorrect summary table of mean sizes of MPA vs non-MPA sites in 2012 and 2018
 
 lobster_summaries <- lobster_tidy %>% 
-  group_by(year, site_type) %>% 
   filter(year == c(2012, 2018)) %>% 
-  summarize(mean_size = mean(size_mm), sd_size = sd(size_mm))
+  group_by(year, site_type) %>% 
+  summarize(mean_size = mean(size_mm))
 
 ## Make a dataset for just 2012
   
@@ -166,8 +168,8 @@ ggplot(lobster_size, aes(x = site, y = size_mm, fill = factor(year))) +
 ## Jitterplot not really working- unable to separate the two years the way we want
 
 ggplot(lobster_size, aes(x = factor(year), y = size_mm)) +
-  geom_violin(aes(color = factor(year), alpha = 0.5))+
-  scale_fill_brewer()+
+  geom_jitter(aes(color = factor(year)), 
+              alpha = 0.5)+
   geom_boxplot(width = 0.3)+
   facet_grid(~site) +
   labs(x = "Site",
@@ -195,12 +197,11 @@ ggplot(lobster_size, aes(x = factor(year), y = size_mm)) +
 -----
 ```{r,}
 ## Starting t tests
+## #1 size differences in 2012 between MPA and non-MPA
 
 MPA_2012 <- year_2012 %>% 
   filter(site_type == "MPA") %>% 
   pull(size_mm)
-
-MPA_2012
 
 non_MPA_2012 <- year_2012 %>% 
   filter(site_type == "Non-MPA") %>% 
@@ -210,35 +211,112 @@ size_2012_ttest <- t.test(MPA_2012, non_MPA_2012)
 
 size_2012_ttest
 
-## test_meann <- lobster_tidy %>% 
-#  filter(year == "2012") %>% 
-#  filter(site_type == "Non-MPA") %>% 
-#  summarise(mean_size = mean(size_mm))
-  
-## MPA_test <- year_2012 %>% 
-#  filter(site_type == "MPA") %>% 
-#  pull(size_mm)
+#Cohen's d
+
+size_2012_d <- effsize::cohen.d(MPA_2012, non_MPA_2012)
+
+size_2012_d
+
+## Summary tables
+
+#### n_mpa_2012 <- come back to me! 
+
+mean_MPA_2012 <- mean(MPA_2012, na.rm = TRUE)
+sd_MPA_2012 <- sd(MPA_2012, na.rm = TRUE)
+
+mean_nonMPA_2012 <- mean(non_MPA_2012, na.rm = TRUE)
+sd_nonMPA_2012 <- sd(non_MPA_2012, na.rm = TRUE)
 
 
-# non_MPA_test <- year_2012 %>% 
-#  filter(site_type == "Non-MPA") %>% 
-#  pull(size_mm)
-
-# size_test <- t.test(MPA_test, non_MPA_test)
-
-# size_test
-
-## COHEN'S D
-
-# size_2012_d <- effsize::cohen.d(MPA_2012$size_mm, non_MPA_2012$size_mm, na.rm = TRUE) ??
 
 ```
 
-Is there a significant difference in lobster size between MPA and non-MPA sites? 
-In comparing these two sample populations,... 
+Is there a significant difference in lobster size between MPA and non-MPA sites in 2012? 
 
-There is a .2% chance that we could have gotten sample means at least as different as ours if we sampled from populations with the same mean. Using a 95% confidence interval, we have sufficient evidence to reject the null hypothesis that the sample populations have the same mean. .....????
+Mean lobster size (mm) in MPA sites (`r round(mean_MPA_2012, 2)` $\pm$ `r round(sd_MPA_2012, 2)`, n = (inline referencing for n) differed significantly from the mean lobster size in non-MPA sites (`r round(mean_nonMPA_2012, 2)`) $\pm$ `r round(sd_nonMPA_2012, 2)`, n = (inline referencing!!) by using a two-sample t-test (t(`r round(size_2012_ttest$parameter, 2)`) = `r round(size_2012_ttest$statistic, 2)`, *p* <0.0001).
 
+
+```{r}
+## #2 size differences in 2018 between MPA and non-MPA
+
+MPA_2018 <- year_2018 %>% 
+  filter(site_type == "MPA") %>% 
+  pull(size_mm)
+
+MPA_2012
+
+non_MPA_2018 <- year_2018 %>% 
+  filter(site_type == "Non-MPA") %>% 
+  pull(size_mm)
+
+size_2018_ttest <- t.test(MPA_2018, non_MPA_2018)
+
+size_2018_ttest
+
+#Cohen's d
+
+size_2018_d <- effsize::cohen.d(MPA_2018, non_MPA_2018)
+
+size_2018_d
+
+mean_MPA_2018 <- mean(MPA_2018, na.rm = TRUE)
+sd_MPA_2018 <- sd(MPA_2018, na.rm = TRUE)
+
+mean_nonMPA_2018 <- mean(non_MPA_2018, na.rm = TRUE)
+sd_nonMPA_2018 <- sd(non_MPA_2018, na.rm = TRUE)
+
+```
+
+Is there a significant difference in lobster size between MPA and non-MPA sites in 2018? 
+
+Mean lobster size (mm) in MPA sites (`r round(mean_MPA_2018, 2)` $\pm$ `r round(sd_MPA_2018, 2)`, n = (inline referencing for n) differed significantly from the mean lobster size in non-MPA sites (`r round(mean_nonMPA_2018, 2)`) $\pm$ `r round(sd_nonMPA_2018, 2)`, n = (inline referencing!!) by using a two-sample t-test (t(`r round(size_2018_ttest$parameter, 2)`) = `r round(size_2018_ttest$statistic, 2)`, *p* <0.0001). (maybe inline reference p)
+
+
+```{r}
+## #3 size differences in MPA between 2012 and 2018
+
+MPA_diff_ttest <- t.test(MPA_2012, MPA_2018)
+
+MPA_diff_ttest
+
+#Cohen's d
+
+MPA_diff_d <- effsize::cohen.d(MPA_2012, MPA_2018)
+
+MPA_diff_d
+
+```
+
+```{r}
+## #4 size differences in non-MPA sites between 2012 and 2018
+
+non_MPA_diff_ttest <- t.test(non_MPA_2012, non_MPA_2018)
+
+non_MPA_diff_ttest
+
+#Cohen's d
+
+non_MPA_diff_d <- effsize::cohen.d(non_MPA_2012, non_MPA_2018)
+
+non_MPA_diff_d
+
+```
+
+```{r}
+### Interactive table
+
+# Make table subset
+
+sub_lobster <- lobster_tidy %>% 
+  select(site, site_type, year, size_mm) %>% 
+  filter(year == c("2012", "2018"))
+
+summary_attempt <- tibble(mean_MPA_2012, mean_MPA_2018, mean_nonMPA_2012, mean_nonMPA_2018, sd_MPA_2012, sd_MPA_2018, sd_nonMPA_2012, sd_nonMPA_2018)
+
+
+
+
+```
 
 
 ## References 
