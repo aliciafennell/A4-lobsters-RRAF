@@ -1,5 +1,5 @@
 ---
-title: "Impact of Marine Protected Area's on California Spiny Lobster distribution along Santa Barbara coast"
+title: "Impact of Marine Protected Areas on California Spiny Lobster distribution along Santa Barbara coast"
 subtitle: "A report prepared for ESM 206"
 author: "Alicia Fennell and Rachel Rhodes"
 date: "11/12/2019"
@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = FALSE,
 
 # Introduction 
 
-Starting in 2012, data has been collected on the abundance, size and location of the California spiny lobster (Panulirus interruptus) in an effort to understand the ecology of the coastal kelp forests along the Santa Barbara coast. California spiny lobsters are an important predator species thatkeep kelp-eating species like sea urchin in check. 
+Starting in 2012, data has been collected on the abundance, size, and location of the California spiny lobster (Panulirus interruptus) in an effort to understand the ecology of the coastal kelp forests along the Santa Barbara coast. California spiny lobsters are an important predator species that keep kelp-eating species like sea urchin in check. 
 
 
 # Data and Methods
@@ -66,8 +66,8 @@ annual_ab_site <- lobster_tidy %>%
 
 lobster_summaries <- lobster_tidy %>% 
   filter(year == c(2012, 2018)) %>% 
-  group_by(year, site_type) %>% 
-  summarize(mean_size = mean(size_mm))
+  group_by(site_type, year) %>% 
+  summarize(mean_size = mean(size_mm, na.rm = TRUE))
 
 ## Make a dataset for just 2012
   
@@ -191,11 +191,11 @@ ggplot(lobster_size, aes(x = factor(year), y = size_mm)) +
 #### 3. Mean lobster sizes between site types (MPA and non-MPA) in 2012 and 2018
 
 
-
-## Summary
-
 -----
-```{r,}
+```{r, include = FALSE }
+
+
+
 ## Starting t tests
 ## #1 size differences in 2012 between MPA and non-MPA
 
@@ -219,7 +219,8 @@ size_2012_d
 
 ## Summary tables
 
-#### n_mpa_2012 <- come back to me! 
+n_mpa_2012 <- as.numeric(length(MPA_2012))
+n_nonMPA_2012 <- as.numeric(length(non_MPA_2012))
 
 mean_MPA_2012 <- mean(MPA_2012, na.rm = TRUE)
 sd_MPA_2012 <- sd(MPA_2012, na.rm = TRUE)
@@ -233,10 +234,10 @@ sd_nonMPA_2012 <- sd(non_MPA_2012, na.rm = TRUE)
 
 Is there a significant difference in lobster size between MPA and non-MPA sites in 2012? 
 
-Mean lobster size (mm) in MPA sites (`r round(mean_MPA_2012, 2)` $\pm$ `r round(sd_MPA_2012, 2)`, n = (inline referencing for n) differed significantly from the mean lobster size in non-MPA sites (`r round(mean_nonMPA_2012, 2)`) $\pm$ `r round(sd_nonMPA_2012, 2)`, n = (inline referencing!!) by using a two-sample t-test (t(`r round(size_2012_ttest$parameter, 2)`) = `r round(size_2012_ttest$statistic, 2)`, *p* <0.0001).
+Mean lobster size (mm) in MPA sites (`r round(mean_MPA_2012, 2)` $\pm$ `r round(sd_MPA_2012, 2)`, n = `r n_mpa_2012`) differed significantly from the mean lobster size in non-MPA sites (`r round(mean_nonMPA_2012, 2)` $\pm$ `r round(sd_nonMPA_2012, 2)`, n = `r n_nonMPA_2012`) by using a two-sample t-test (t(`r round(size_2012_ttest$parameter, 2)`) = `r round(size_2012_ttest$statistic, 2)`, *p* = `r round(size_2012_ttest$p.value, 3)`). The effect size was medium (Cohen's d = `r round(size_2012_d$estimate, 2)`).
 
 
-```{r}
+```{r, include = FALSE }
 ## #2 size differences in 2018 between MPA and non-MPA
 
 MPA_2018 <- year_2018 %>% 
@@ -259,6 +260,9 @@ size_2018_d <- effsize::cohen.d(MPA_2018, non_MPA_2018)
 
 size_2018_d
 
+n_mpa_2018 <- as.numeric(length(MPA_2018))
+n_nonMPA_2018 <- as.numeric(length(non_MPA_2018))
+
 mean_MPA_2018 <- mean(MPA_2018, na.rm = TRUE)
 sd_MPA_2018 <- sd(MPA_2018, na.rm = TRUE)
 
@@ -269,10 +273,10 @@ sd_nonMPA_2018 <- sd(non_MPA_2018, na.rm = TRUE)
 
 Is there a significant difference in lobster size between MPA and non-MPA sites in 2018? 
 
-Mean lobster size (mm) in MPA sites (`r round(mean_MPA_2018, 2)` $\pm$ `r round(sd_MPA_2018, 2)`, n = (inline referencing for n) differed significantly from the mean lobster size in non-MPA sites (`r round(mean_nonMPA_2018, 2)`) $\pm$ `r round(sd_nonMPA_2018, 2)`, n = (inline referencing!!) by using a two-sample t-test (t(`r round(size_2018_ttest$parameter, 2)`) = `r round(size_2018_ttest$statistic, 2)`, *p* <0.0001). (maybe inline reference p)
+Mean lobster size (mm) in MPA sites (`r round(mean_MPA_2018, 2)` $\pm$ `r round(sd_MPA_2018, 2)`, n = `r n_mpa_2018`) differed significantly from the mean lobster size in non-MPA sites (`r round(mean_nonMPA_2018, 2)` $\pm$ `r round(sd_nonMPA_2018, 2)`, n = `r n_nonMPA_2018`) by using a two-sample t-test (t(`r round(size_2018_ttest$parameter, 2)`) = `r round(size_2018_ttest$statistic, 2)`, *p* < .001). The effect size was medium-small (Cohen's d = `r round(size_2018_d$estimate, 2)`).
 
 
-```{r}
+```{r, include = FALSE }
 ## #3 size differences in MPA between 2012 and 2018
 
 MPA_diff_ttest <- t.test(MPA_2012, MPA_2018)
@@ -287,7 +291,12 @@ MPA_diff_d
 
 ```
 
-```{r}
+Is there a significant difference in lobster size between 2012 and 2018 in MPA sites? 
+
+Mean lobster size (mm) in MPA sites in 2012 (`r round(mean_MPA_2012, 2)` $\pm$ `r round(sd_MPA_2018, 2)`, n = `r n_mpa_2012`) differed significantly from the mean lobster size in MPA sites in 2018 (`r round(mean_MPA_2018, 2)` $\pm$ `r round(sd_MPA_2018, 2)`, n = `r n_mpa_2018`) by using a two-sample t-test (t(`r round(MPA_diff_ttest$parameter, 2)`) = `r round(MPA_diff_ttest$statistic, 2)`, *p* < .001). The effect size was large (Cohen's d = `r round(MPA_diff_d$estimate, 2)`).
+
+```{r, include = FALSE }
+
 ## #4 size differences in non-MPA sites between 2012 and 2018
 
 non_MPA_diff_ttest <- t.test(non_MPA_2012, non_MPA_2018)
@@ -302,6 +311,11 @@ non_MPA_diff_d
 
 ```
 
+Is there a significant difference in lobster size between 2012 and 2018 in non-MPA sites? 
+
+Mean lobster size (mm) in non-MPA sites in 2012 (`r round(mean_nonMPA_2012, 2)` $\pm$ `r round(sd_nonMPA_2018, 2)`, n = `r n_nonMPA_2012`) did not differ significantly from the mean lobster size in non-MPA sites in 2018 (`r round(mean_nonMPA_2018, 2)` $\pm$ `r round(sd_nonMPA_2018, 2)`, n = `r n_nonMPA_2018`) by using a two-sample t-test (t(`r round(non_MPA_diff_ttest$parameter, 2)`) = `r round(non_MPA_diff_ttest$statistic, 2)`, *p* = `r round(non_MPA_diff_ttest$p.value, 3)`). The effect size was small (Cohen's d = `r round(non_MPA_diff_d$estimate, 2)`).
+
+
 ```{r}
 ### Interactive table
 
@@ -311,12 +325,34 @@ sub_lobster <- lobster_tidy %>%
   select(site, site_type, year, size_mm) %>% 
   filter(year == c("2012", "2018"))
 
-summary_attempt <- tibble(mean_MPA_2012, mean_MPA_2018, mean_nonMPA_2012, mean_nonMPA_2018, sd_MPA_2012, sd_MPA_2018, sd_nonMPA_2012, sd_nonMPA_2018)
+
+summary_attempt <- tibble(mean_MPA_2012, mean_MPA_2018, mean_nonMPA_2012, mean_nonMPA_2018, sd_MPA_2012, sd_MPA_2018, sd_nonMPA_2012, sd_nonMPA_2018, n_mpa_2012, n_mpa_2018, n_nonMPA_2012, n_nonMPA_2018)
 
 
 
+means <- c(mean_MPA_2012, mean_MPA_2018, mean_nonMPA_2012, mean_nonMPA_2018)
+sds <- c(sd_MPA_2012, sd_MPA_2018, sd_nonMPA_2012, sd_nonMPA_2018)
+ns <- c(n_mpa_2012, n_mpa_2018, n_nonMPA_2012, n_nonMPA_2018)
+
+summary_try <- tibble(means, sds, ns) %>% 
+  kable(col.names = c("Mean Size (mm)", 
+                     "Standard Deviation", 
+                     "Sample Size (n)")
+        ) %>% 
+  kable_styling(bootstrap_options = "striped", 
+                full_width = F,
+                position = "left"
+                ) %>% 
+  add_header_above(c("Summary" = 3))
+
+summary_try
+
+## HI Rachel! This "summary_try" is slightly closer to a table, but alas... it's not quite what we want. 
 
 ```
+
+
+## Summary
 
 
 ## References 
