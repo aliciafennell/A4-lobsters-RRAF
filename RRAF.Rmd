@@ -14,14 +14,13 @@ knitr::opts_chunk$set(echo = FALSE,
 
 # Introduction 
 
-The California spiny loberster (Panulirus interruptus) is an important 
+Starting in 2012, the Santa Barbara Coastal Term Ecological Reserach site has collected data on the abundance, size and location of the California spiny lobster (Panulirus interruptus) in an effort to understadn the ecology of the coastal kelp forests along the Santa Barbara coast. California spiny lobsters are an important predator of sea urchins....
 
 
-As part of the Santa Barbara Coastal Term Ecological Research site, 
-Starting in 2012, data has been collected on the abundance of the California spiny lobster (Panulirus interruptus) 
 
-on the abundance, size, and fishing pressure of California spiny lobster (Panulirus interruptus) was collected along the Santa Barbar coast. 
 # Data and Methods
+
+Santa Barbara Coastal Long Term Ecological Research program at UC Santa Barbaraca collected data for the abundance, size, and location of California spiny lobster along the coast of the Santa Barbara channel from 2012-2018. Spiny lobster abundance and size data was collected during annual dives before the start of the fishing season in late summer at five sites. Divers recorded the number and size of spiny lobster at four 60 x 5 m (300 m2 total) transects at each site. 
 
 # Results
 
