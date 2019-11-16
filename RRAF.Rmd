@@ -1,5 +1,6 @@
 ---
-title: "Lobsters"
+title: "Impact of Marine Protected Area's on California Spiny Lobster distribution along the Santa Barbara coast"
+subtitle: "A report prepared for ESM 206"
 author: "Alicia Fennell and Rachel Rhodes"
 date: "11/12/2019"
 output: html_document
@@ -13,6 +14,13 @@ knitr::opts_chunk$set(echo = FALSE,
 
 # Introduction 
 
+The California spiny loberster (Panulirus interruptus) is an important 
+
+
+As part of the Santa Barbara Coastal Term Ecological Research site, 
+Starting in 2012, data has been collected on the abundance of the California spiny lobster (Panulirus interruptus) 
+
+on the abundance, size, and fishing pressure of California spiny lobster (Panulirus interruptus) was collected along the Santa Barbar coast. 
 # Data and Methods
 
 # Results
