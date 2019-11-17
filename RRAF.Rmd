@@ -316,37 +316,32 @@ Mean lobster size (mm) in non-MPA sites in 2012 (`r round(mean_nonMPA_2012, 2)` 
 
 
 ```{r}
-### Interactive table
+### table
 
 # Make table subset
 
-sub_lobster <- lobster_tidy %>% 
-  select(site, site_type, year, size_mm) %>% 
-  filter(year == c("2012", "2018"))
+table_data <- lobster_tidy %>% 
+  select(year, site, size_mm, site_type) %>% 
+  group_by(site_type, year) %>% 
+  summarize(mean_size = mean(size_mm), sd = sd(size_mm), n = length(size_mm)) %>% 
+  filter(year %in% c(2012, 2018))
 
+round_table <- table_data %>% 
+  mutate_at(vars(-n, -site_type, -year), funs(round(., 2)))
 
-summary_attempt <- tibble(mean_MPA_2012, mean_MPA_2018, mean_nonMPA_2012, mean_nonMPA_2018, sd_MPA_2012, sd_MPA_2018, sd_nonMPA_2012, sd_nonMPA_2018, n_mpa_2012, n_mpa_2018, n_nonMPA_2012, n_nonMPA_2018)
-
-
-
-means <- c(mean_MPA_2012, mean_MPA_2018, mean_nonMPA_2012, mean_nonMPA_2018)
-sds <- c(sd_MPA_2012, sd_MPA_2018, sd_nonMPA_2012, sd_nonMPA_2018)
-ns <- c(n_mpa_2012, n_mpa_2018, n_nonMPA_2012, n_nonMPA_2018)
-
-summary_try <- tibble(means, sds, ns) %>% 
-  kable(col.names = c("Mean Size (mm)", 
+lobs_table <- round_table %>% 
+  kable(col.names = c("Site Type",
+                      "Year",
+                      "Mean Size (mm)", 
                      "Standard Deviation", 
-                     "Sample Size (n)")
-        ) %>% 
+                     "Sample Size (n)")) %>% 
   kable_styling(bootstrap_options = "striped", 
                 full_width = F,
-                position = "left"
-                ) %>% 
-  add_header_above(c("Summary" = 3))
+                position = "left") %>% 
+  add_header_above(c("Summary of Lobster Size Distribution" = 5))
 
-summary_try
+lobs_table
 
-## HI Rachel! This "summary_try" is slightly closer to a table, but alas... it's not quite what we want. I love it!!! 
 
 ```
 
