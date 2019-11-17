@@ -19,7 +19,7 @@ Starting in 2012, data has been collected on the abundance, size, and location o
 
 # Data and Methods
 
-Santa Barbara Coastal Long Term Ecological Research program at UC Santa Barbaraca collected data for the abundance, size, and location of California spiny lobster along the coast of the Santa Barbara channel from 2012-2018. Spiny lobster abundance and size data was collected during annual dives before the start of the fishing season in late summer at five sites.Divers recorded the number and size of spiny lobster at four 60 x 5 m (300 m2 total) transects at each site. Two of the sites, Naples and Isla Vista, are Marine Protected Areas that were established in January 2012. Mean lobster abundance forMarine Protected area site and non-protected sites were compared by two-sample t-tests....All analysis and figured were prepared using R software version 3.6.1. 
+Santa Barbara Coastal Long Term Ecological Research program at UC Santa Barbaraca collected data for the abundance, size, and location of California spiny lobster along the coast of the Santa Barbara channel from 2012-2018. Spiny lobster abundance and size data was collected during annual dives before the start of the fishing season in late summer at five sites.Divers recorded the number and size of spiny lobster at four 60 x 5 m (300 m2 total) transects at each site. Two of the sites, Naples and Isla Vista, are Marine Protected Areas that were established in January 2012. Mean lobster abundance for Marine Protected Area sites and non-protected sites were compared by two-sample t-tests. All analysis and figured were prepared using R software version 3.6.1. 
 
 
 ```{r}
@@ -110,7 +110,6 @@ ggplot(annual_ab_site, aes(x = year, y = n)) +
   geom_line(aes(group = site,
                 color = site_type), 
             size = 0.75) +
-  scale_color_manual(values = c("coral2", "deepskyblue3"))+
   theme_minimal()+
   theme(
     legend.position = c(0.25, .88),
@@ -128,6 +127,7 @@ ggplot(annual_ab_site, aes(x = year, y = n)) +
        y = "Lobster count",
        color = "Site Type")
 ```
+***Figure 1*** *California spiny lobster abundance at sites within Marine Protected Area  and sites not within  Marine Protected Areas between 2012 and 2018. Between the years 2017 and 2018, lobster populations at the marine protected sites grew, while populations at the non-marine protected sites declined or remained the same.*
 
 
 #### 2. Lobster size distribution shifts between 2012 and 2018
@@ -145,22 +145,21 @@ lobster_size <- lobster_tidy %>%
 ```{r}
 ## Results B - Visualization of size distribution for lobsters obvserved at the 5 different sites in 2012 and 2018. Graph shows the community size distributions at each in the 2 years. 
 
-ggplot(lobster_size, aes(x = site, y = size_mm, fill = factor(year))) +
-  geom_violin()+
-  stat_summary(fun.y = "mean", geom = "point", size = 3)+
-  scale_fill_brewer()+
-  labs(x = "Site",
-       y = "Size (mm)",
-       fill = "Year")+
-  ggtitle("CALIFORNIA SPINY LOBSTER DISTRIBUTION 2012 & 2018",
-          subtitle = "Santa Barbara Channel")+
-  theme_minimal()+
-  theme(legend.position = c(0.78, .88),
-        legend.justification = c("left", "top"),
-        legend.box.just = "right",
-        legend.margin = margin(6, 6, 6, 6),
-        legend.background = element_rect("white"))
-
+# ggplot(lobster_size, aes(x = site, y = size_mm, fill = factor(year))) +
+#   geom_violin()+
+#   stat_summary(fun.y = "mean", geom = "point", size = 3)+
+#   scale_fill_brewer()+
+#   labs(x = "Site",
+#        y = "Size (mm)",
+#        fill = "Year")+
+#   ggtitle("CALIFORNIA SPINY LOBSTER DISTRIBUTION 2012 & 2018",
+#           subtitle = "Santa Barbara Channel")+
+#   theme_minimal()+
+#   theme(legend.position = c(0.78, .88),
+#         legend.justification = c("left", "top"),
+#         legend.box.just = "right",
+#         legend.margin = margin(6, 6, 6, 6),
+#         legend.background = element_rect("white"))
 
 ```
 ```{r}
@@ -186,7 +185,7 @@ ggplot(lobster_size, aes(x = factor(year), y = size_mm)) +
 
 
 ```
-
+***Figure 2*** *Size distribution of California spiny lobster at each side in 2012 compared to 2018. The abundance of spiny lobster in ...* 
 
 #### 3. Mean lobster sizes between site types (MPA and non-MPA) in 2012 and 2018
 
@@ -347,7 +346,7 @@ summary_try <- tibble(means, sds, ns) %>%
 
 summary_try
 
-## HI Rachel! This "summary_try" is slightly closer to a table, but alas... it's not quite what we want. 
+## HI Rachel! This "summary_try" is slightly closer to a table, but alas... it's not quite what we want. I love it!!! 
 
 ```
 
