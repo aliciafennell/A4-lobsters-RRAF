@@ -129,7 +129,7 @@ ggplot(annual_ab_site, aes(x = year, y = n)) +
               color = site_type),
           method = "last.points") +
   ggtitle("CALIFORNIA SPINY LOBSTER ABUNDANCE",
-          subtitle = "Annual abundance at MPA and non-MPA sites between 2012 and 2018")+
+          subtitle = "Annual lobster counts at MPA and non-MPA sites between 2012 and 2018")+
   labs(x = "Year",
        y = "Lobster count",
        color = "Site Type")
@@ -156,27 +156,6 @@ lobster_size <- lobster_tidy %>%
 ```{r}
 ## Results B - Visualization of size distribution for lobsters obvserved at the 5 different sites in 2012 and 2018. Graph shows the community size distributions at each in the 2 years. 
 
-# ggplot(lobster_size, aes(x = site, y = size_mm, fill = factor(year))) +
-#   geom_violin()+
-#   stat_summary(fun.y = "mean", geom = "point", size = 3)+
-#   scale_fill_brewer()+
-#   labs(x = "Site",
-#        y = "Size (mm)",
-#        fill = "Year")+
-#   ggtitle("CALIFORNIA SPINY LOBSTER DISTRIBUTION 2012 & 2018",
-#           subtitle = "Santa Barbara Channel")+
-#   theme_minimal()+
-#   theme(legend.position = c(0.78, .88),
-#         legend.justification = c("left", "top"),
-#         legend.box.just = "right",
-#         legend.margin = margin(6, 6, 6, 6),
-#         legend.background = element_rect("white"))
-
-```
-```{r}
-
-## Jitterplot not really working- unable to separate the two years the way we want
-
 
 ggplot(lobster_size, aes(x = factor(year), y = size_mm)) +
   geom_jitter(aes(color = factor(year)), 
@@ -194,20 +173,6 @@ ggplot(lobster_size, aes(x = factor(year), y = size_mm)) +
   ggtitle(label = "CALIFORNIA SPINY LOBSTER SIZE DISTRIBUTION",
           subtitle = "Distribution of size (mm) in 2012 & 2018 ")
 
-
-# ggplot(lobster_size, aes(x = factor(year), y = size_mm)) +
-#  geom_jitter(aes(color = site_type),
-#              alpha = 0.7)+
-#  geom_boxplot(width = 0.3)+
-#  scale_color_manual(values = color_group)+
-#  theme_light() +
-#  facet_grid(~site) +
-  # theme(strip.background = element_rect(fill = c("blue", "blue", "green", "green", "green")))+
-#  labs(x = "Site",
-#       y = "Size (mm)",
-#       color = "Site Type")+
-#  ggtitle(label = "CALIFORNIA SPINY LOBSTER SIZE DISTRIBUTION (2012 & 2018)",
-#          subtitle = "Distirbution of size(mm) at all sites")
 
 ```
 
