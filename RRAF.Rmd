@@ -16,6 +16,8 @@ knitr::opts_chunk$set(echo = FALSE,
 
 Starting in 2012, data has been collected on the abundance, size, and location of the California spiny lobster (Panulirus interruptus) in an effort to understand the ecology of the coastal kelp forests along the Santa Barbara coast. California spiny lobsters are an important predator species that can help maintain the health of the kelp forest ecosystem by preying on herbivorous kelp-eating species like sea urchins. 
 
+![**California spiny lobster (Panulirus interruptus).** *Photo: californiadiver.com*](lobster.jpg)
+
 In January of 2012, two sites in the Santa Barbara Channel, Isla Vista and Naples, were designated as Marine Protected Areas (MPA). This designation regulates and limits human activity in a given area in an effort to improve conservation of biodiversity and overall ecosystem health. In this report, findings on lobster size and abundance were compared between sites with MPA status and sites without MPA status. Furthermore, data was compared between 2012 and 2018 in an attempt to see if any trends exist in lobster distribution over time. This data is relevant in assessing the effectiveness of MPA designation and if it correlates with lobster abundance and/or size.
 
 
@@ -98,7 +100,7 @@ year_2018 <- lobster_tidy %>%
 #   theme_minimal() 
 
 ```
-## Results
+# Results
 
 #### 1. Effects of Marine Protected Area designation on spiny lobster abundance
 
@@ -134,7 +136,7 @@ ggplot(annual_ab_site, aes(x = year, y = n)) +
 ```
 
 
-***Figure 1*** *California spiny lobster abundance (counts) at transects within Marine Protected Areas (pink) and at transects not within Marine Protected Areas (blue) between 2012 and 2018. Total lobster counts in 2012: MPA(n) = 32, non-MPA(n) = 199. Total lobster counts in 2018: MPA (n) = 1244, non-MPA(n) = 561.* 
+***Figure 1.*** *California spiny lobster abundance (counts) at transects within Marine Protected Areas (dark teal) and at transects not within Marine Protected Areas (light blue) between 2012 and 2018. Total lobster counts in 2012: MPA(n) = 32, non-MPA(n) = 199. Total lobster counts in 2018: MPA (n) = 1244, non-MPA(n) = 561.* 
 
 Overall the total lobster abundance in MPA sites increased more than non-MPA sites. Total lobster counts within MPA sites increased dramatically from 32 to 1244 between the years 2012 and 2018.Total lobster counts in non-MPA sites also increased from 199 to 561 in that same time period. Of all five sites, abundance of lobsters at Isla Vista (an MPA site) increased the most by 2018. 
 
@@ -195,24 +197,24 @@ ggplot(lobster_size, aes(x = factor(year), y = size_mm)) +
           subtitle = "Distirbution of size(mm) at all sites")
 
 
-ggplot(lobster_size, aes(x = factor(year), y = size_mm)) +
-  geom_jitter(aes(color = site_type),
-              alpha = 0.7)+
-  geom_boxplot(width = 0.3)+
-  scale_color_manual(values = color_group)+
-  theme_light() +
-  facet_grid(~site) +
+# ggplot(lobster_size, aes(x = factor(year), y = size_mm)) +
+#  geom_jitter(aes(color = site_type),
+#              alpha = 0.7)+
+#  geom_boxplot(width = 0.3)+
+#  scale_color_manual(values = color_group)+
+#  theme_light() +
+#  facet_grid(~site) +
   # theme(strip.background = element_rect(fill = c("blue", "blue", "green", "green", "green")))+
-  labs(x = "Site",
-       y = "Size (mm)",
-       color = "Site Type")+
-  ggtitle(label = "CALIFORNIA SPINY LOBSTER SIZE DISTRIBUTION (2012 & 2018)",
-          subtitle = "Distirbution of size(mm) at all sites")
+#  labs(x = "Site",
+#       y = "Size (mm)",
+#       color = "Site Type")+
+#  ggtitle(label = "CALIFORNIA SPINY LOBSTER SIZE DISTRIBUTION (2012 & 2018)",
+#          subtitle = "Distirbution of size(mm) at all sites")
 
 ```
 
 
-***Figure 2*** *Size distribution of California spiny lobster at each site in 2012 compared to 2018. In the box plots, the solid line in the middle represents the median of that sample, while the box itself includes the middle 50% of the data. The whiskers extend to include the remaining 25% of observations on either side of the box, and the solid points indicate outliers. The jitter points behind the boxes are included to show the actual distribution of data points. The two MPA sites are the first two on the graph (Isla Vista and Naples).*
+***Figure 2.*** *Size distribution of California spiny lobster at each site in 2012 compared to 2018. In the box plots, the solid line in the middle represents the median of that sample, while the box itself includes the middle 50% of the data. The whiskers extend to include the remaining 25% of observations on either side of the box, and the solid points indicate outliers. The jitter points behind the boxes are included to show the actual distribution of data points. The two MPA sites are the first two on the graph (Isla Vista and Naples).*
 
 Medians between 2012 and 2018 differed more in MPA sites than in non-MPA sites. The median size in MPA sites in 2012 was 64.5 mm, while the median in 2018 was 78 mm. In non-MPA sites, the difference was smaller; the median went from 75 mm in 2012 to 73 mm in 2018. Figure 2 reinforces the findings of Figure 1 by showing the increase in lobster abundance at all sites, most notably in Isla Vista. A small number of outliers in size were observed at all sites except Arroyo Quemado.
 
@@ -334,7 +336,7 @@ non_MPA_diff_d
 Summary statistics were calculated for lobster size in different protection status sites in 2012 and 2018. Mean lobster size (mm) was compared and analyzed using two-sample t-tests for four groupings: MPA and non-MPA sites in 2012, MPA and non-MPA sites in 2018, MPA sites in 2012 and 2018, and non-MPA sites in 2012 and 2018.
 
 
-***Table 1:*** *Lobster size distribution in 2012 and 2018 in MPA and non-MPA sites. Mean size, standard deviation, and sample size are compared between years and protection status.*
+***Table 1.*** *Lobster size distribution in 2012 and 2018 in MPA and non-MPA sites. Mean size, standard deviation, and sample size are compared between years and protection status.*
 
 ```{r}
 ### table
